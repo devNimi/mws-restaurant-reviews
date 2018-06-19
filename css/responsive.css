@@ -1,0 +1,23 @@
+@media screen and (min-width: 578px) {
+  .filter-options h2 {
+    margin: 0 20px;
+  }
+}
+
+@media screen and (min-width: 397px) {
+  nav {
+    height: 50px;
+  }
+  #maincontent {
+  	margin-top: 50px;
+  }
+  .inside #maincontent {
+  	margin-top: 100px;
+  }
+}
+
+@media screen and (min-width:768px) {
+  #restaurant-cuisine {
+    margin-top: 0;
+  }
+}
