@@ -3,6 +3,11 @@
 https://hackernoon.com/what-is-eslint-how-do-i-set-it-up-on-atom-70f270f57296
 
 
+#
+
+sudo npm i --unsafe-perm=true
+
+
 specifically use browser-sync v2.12.8 otherwise on style changes browser won't reload
 issue is still open on Github https://github.com/BrowserSync/browser-sync/issues/1504
 

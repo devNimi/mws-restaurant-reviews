@@ -1,4 +1,3 @@
-* source maps for JS
 * filter restaurant bar at top while scrolling
 * <del>use SASS
 * fix CSS for titles on the page and home page images

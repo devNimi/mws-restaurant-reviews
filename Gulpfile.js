@@ -4,11 +4,15 @@ const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
 const runSequence = require('run-sequence');
 const browserSync = require('browser-sync').create();
-const useref = require('gulp-useref');
+// const useref = require('gulp-useref');
 const uglify = require('gulp-uglify-es').default;
-const gulpIf = require('gulp-if');
+const htmlmin = require('gulp-html-minifier');
+// const gulpIf = require('gulp-if');
 const mergeStream = require('merge-stream');
 const del = require('del');
+
+// TODO: since we using gulp-load-plugins
+// remove few plugins from up here
 
 // gulp CSS task for build
 gulp.task('css-build', function() {
@@ -59,12 +63,28 @@ gulp.task('watch', ['browserSync', 'css-dev'], function() {
   gulp.watch('app/js/**/*.js', browserSync.reload);
 });
 
+// TODO: add JS concate, and then remember to remove JS minify task
+// also remember to modify copy or html minify task too
+// and don't forget about the gulp-build task itself
+// gulp.task('useref', function() {
+//   return gulp.src('app/*.html')
+//     .pipe(useref())
+//     // Minifies only if it's a JavaScript file
+//     .pipe(gulpIf('*.js', uglify()))
+//     .pipe(gulp.dest('build/'));
+// });
 
-gulp.task('useref', function() {
-  return gulp.src('app/*.html')
-    .pipe(useref())
-    // Minifies only if it's a JavaScript file
-    .pipe(gulpIf('*.js', uglify()))
+// TODO: sourcemaps for JS files
+
+gulp.task('uglifyJS', function() {
+    return gulp.src('app/js/*.js')
+        .pipe(uglify(/* options */))
+        .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('HTMLminify', function() {
+  gulp.src('app/*.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('build/'));
 });
 
@@ -83,7 +103,8 @@ gulp.task('clean:build', function() {
 
 // for final build for production
 gulp.task('build', function(callback) {
-  runSequence('clean:build', ['css-build', 'useref', 'copy'], callback);
+  // runSequence('clean:build', ['css-build', 'useref', 'copy'], callback);
+  runSequence('clean:build', ['css-build', 'uglifyJS', 'HTMLminify', 'copy'], callback);
 });
 
 // for development
