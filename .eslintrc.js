@@ -7,6 +7,7 @@ module.exports = {
       "linebreak-style": 0,
       "ignoreComments": true,
       "ignoreUrls": true,
+      "ignoreStrings": true ,
       "ignoreTrailingComments": true,
     }
 };

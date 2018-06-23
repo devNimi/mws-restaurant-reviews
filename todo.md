@@ -1,5 +1,6 @@
 * filter restaurant bar at top while scrolling
 * <del>use SASS
+* add fonts, also add it to service worker for caching
 * fix CSS for titles on the page and home page images
 * final UI touch, font size, color etc
 * clean CSS

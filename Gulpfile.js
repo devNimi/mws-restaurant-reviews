@@ -60,7 +60,7 @@ gulp.task('watch', ['browserSync', 'css-dev'], function() {
   // gulp.watch([task to run], [action to perform]);
   gulp.watch('app/scss/**/*.scss', ['css-dev']);
   gulp.watch('app/*.html', browserSync.reload);
-  gulp.watch('app/js/**/*.js', browserSync.reload);
+  gulp.watch('app/**/*.js', browserSync.reload);
 });
 
 // TODO: add JS concate, and then remember to remove JS minify task
@@ -73,13 +73,13 @@ gulp.task('watch', ['browserSync', 'css-dev'], function() {
 //     .pipe(gulpIf('*.js', uglify()))
 //     .pipe(gulp.dest('build/'));
 // });
-
+// TODO make sure to update sw.js file accordingly
 // TODO: sourcemaps for JS files
 
 gulp.task('uglifyJS', function() {
-    return gulp.src('app/js/*.js')
+    return gulp.src('app/**/*.js')
         .pipe(uglify(/* options */))
-        .pipe(gulp.dest('build/js'));
+        .pipe(gulp.dest('build/'));
 });
 
 gulp.task('HTMLminify', function() {

@@ -4,6 +4,19 @@ let cuisines;
 var map
 var markers = []
 
+
+// register service worker
+if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(function(registration) {
+          console.log('Service Worker registration successful with scope: ',
+          registration.scope);
+        })
+        .catch(function(err) {
+          console.log('Service Worker registration failed: ', err);
+        });
+    }
+
 /**
 * Fetch neighborhoods and cuisines as soon as the page is loaded.
 */
@@ -31,7 +44,6 @@ fetchNeighborhoods = () => {
 */
 fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   const select = document.getElementById('neighborhoods-select');
-  console.log(select);
   neighborhoods.forEach((neighborhood) => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
@@ -87,7 +99,6 @@ window.initMap = () => {
   // Adds title to iframe element created by Google Maps
   // https://stackoverflow.com/questions/49012240/google-maps-js-iframe-title
   google.maps.event.addListenerOnce(map, 'idle', () => {
-    console.log('addition succss');
     document.getElementsByTagName('iframe')[0].title = 'Google Maps';
   });
 };

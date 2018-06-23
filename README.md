@@ -1,20 +1,21 @@
-#
+#Note
 
-https://hackernoon.com/what-is-eslint-how-do-i-set-it-up-on-atom-70f270f57296
+* `npm install`
+* `gulp serve` for development
+* `gulp build` for production
+* development code is in `app` folder
+* production code will be in `build` folder
+* to set up ES Lint [go here](https://hackernoon.com/what-is-eslint-how-do-i-set-it-up-on-atom-70f270f57296)
 
+=> if there is error installing npm packages on MAC, try `sudo npm i --unsafe-perm=true`
 
-#
-
-sudo npm i --unsafe-perm=true
-
-
+## personal notes
 specifically use browser-sync v2.12.8 otherwise on style changes browser won't reload
-issue is still open on Github https://github.com/BrowserSync/browser-sync/issues/1504
+issue is still open on Github https://github.com/BrowserSync/browser-sync/issues/150
 
 
 
-
-
+## instructor's notes
 
 # Mobile Web Specialist Certification Course
 ---
