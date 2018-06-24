@@ -3,7 +3,8 @@
     const filesToCache = [
       '.',
       'css/main.css',
-      // 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
+      'css/404-or-offline.css',
+      'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700',
       'js/dbhelper.js',
       'js/main.js',
       'js/restaurant_info.js',
@@ -24,7 +25,7 @@
       '404.html',
     ];
 
-    const staticCacheName = 'restaurant-app-v4';
+    const staticCacheName = 'restaurant-app-v1';
 
     self.addEventListener('install', function(event) {
       console.log('Attempting to install service worker and cache static assets');
@@ -39,6 +40,12 @@
     self.addEventListener('fetch', function(event) {
       let requestUrl = new URL(event.request.url);
       if (requestUrl.origin === location.origin) {
+        // since right now we are serving single html page, for any requests
+        // we'll be caching restaurant.html page only once
+        if (requestUrl.pathname.startsWith('/restaurant.html')) {
+          event.respondWith(serveRestaurantHTML(event.request));
+          return;
+        };
         event.respondWith(
           caches.match(event.request).then(function(response) {
             if (response) {
@@ -90,4 +97,23 @@
         })
       );
     });
+
+    // serves restaurants.html page
+    function serveRestaurantHTML(request) {
+      console.log(request);
+      // Use this url to store & match retaurants.hmtl in the cache.
+      // This means you only store one copy of restaurants.html
+      const storageUrl = request.url.split('?')[0];
+
+      return caches.open(staticCacheName).then(function(cache) {
+         return cache.match(storageUrl).then(function(response) {
+           if (response) return response;
+
+           return fetch(request).then(function(networkResponse) {
+             cache.put(storageUrl, networkResponse.clone());
+             return networkResponse;
+           });
+         });
+       });
+    }
 })();

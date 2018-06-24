@@ -1,0 +1,74 @@
+ #maincontent {
+  background-color: $primary-color;
+  min-height: 100%;
+	width: 100%;
+}
+#footer {
+  background-color: $primary-color-dark;
+  color: $primary-color-text;
+  font-size: 8pt;
+  letter-spacing: 1px;
+  padding: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  justify-content: center;
+}
+/* ====================== Header ====================== */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+/* ====================== Navigation ====================== */
+nav {
+  width: 100%;
+  height: 80px;
+  background-color: $primary-color-dark;
+  text-align:center;
+}
+nav h1 {
+  margin: auto;
+	padding-top: 10px;
+}
+nav h1 a {
+  color: #fff;
+  font-size: 14pt;
+  font-weight: $font-weight-light;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+}
+#maincontent {
+	margin-top: 80px;
+}
+#breadcrumb {
+    padding: 10px 40px 16px;
+    list-style: none;
+    background-color: #eee;
+    font-size: 17px;
+    margin: 0;
+}
+
+/* Display list items side by side */
+#breadcrumb li {
+    display: inline;
+}
+
+/* Add a slash symbol (/) before/behind each list item */
+#breadcrumb li+li:before {
+    padding: 8px;
+    color: black;
+    content: "/\00a0";
+}
+
+/* Add a color to all links inside the list */
+#breadcrumb li a {
+    // color: #0275d8;
+    // text-decoration: none;
+}
+
+/* Add a color on mouse-over */
+#breadcrumb li a:hover {
+    // color: #01447e;
+    // text-decoration: underline;
+}

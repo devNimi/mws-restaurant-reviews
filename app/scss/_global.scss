@@ -1,0 +1,79 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html {
+  font-size: $font-size-base;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -ms-overflow-style: scrollbar;
+  -webkit-tap-highlight-color: transparent;
+	color: $primary-text-color;
+	background-color: $primary-color;
+}
+
+body {
+  margin: 0; // 1
+  font-family: $font-family-raleway;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  text-align: left; // 3
+}
+
+hr {
+  box-sizing: content-box; // 1
+  height: 0; // 1
+  overflow: visible; // 2
+}
+
+
+ul, li {
+	// font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: $primary-text-color;
+}
+a {
+	color: $additional-color-one;
+	text-decoration: none;
+	cursor: pointer;
+}
+a:hover, a:focus {
+	color: $additional-color-two;
+	text-decoration: none;
+}
+img {
+  vertical-align: middle;
+  border-style: none; // Remove the border on images inside links in IE 10-.
+}
+a img{
+	border: none 0px #fff;
+}
+strong{
+	color: $additional-color-one-a11y;
+}
+h1, h2, h3, h4, h5, h6 {
+  // font-family: Arial, Helvetica, sans-serif;
+  margin: 0 0 20px;
+}
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+table {
+	background-color: $divider-color;
+  border-collapse: collapse; // Prevent double borders
+}
+
+/* helper classes */
+/* https://css-tricks.com/centering-css-complete-guide/ */
+.verticle-align {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.float-right {
+	float: right;
+}
