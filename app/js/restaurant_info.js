@@ -5,14 +5,32 @@ let map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
-    } else {
+  // fetchRestaurantFromURL((error, restaurant) => {
+    // if (error) { // Got an error!
+    //   console.error(error);
+    // } else {
+    //   console.log('ent else');
+    //   self.map = new google.maps.Map(document.getElementById('map'), {
+    //     zoom: 16,
+    //     center: restaurant.latlng,
+    //     scrollwheel: false,
+    //   });
+    //   fillBreadcrumb();
+    //   DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    //   // Screen reader users rely on frame titles to describe the contents of frames
+    //   // Adds title to iframe element created by Google Maps
+    //   // https://stackoverflow.com/questions/49012240/google-maps-js-iframe-title
+    //   google.maps.event.addListenerOnce(self.map, 'idle', () => {
+    //     document.getElementsByTagName('iframe')[0].title = 'Google Maps';
+    //   });
+    // }
+
+    fetchRestaurantFromURL(restaurant)
+    .then((restaurant)=>{
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: restaurant.latlng,
-        scrollwheel: false
+        scrollwheel: false,
       });
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
@@ -22,34 +40,39 @@ window.initMap = () => {
       google.maps.event.addListenerOnce(self.map, 'idle', () => {
         document.getElementsByTagName('iframe')[0].title = 'Google Maps';
       });
-    }
-  });
-}
+    })
+    .catch((error)=>{// Got an error
+      console.log(error);
+    });
+  };
 
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = (callback) => {
+fetchRestaurantFromURL = (restaurant) => {
   if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
-    return;
+    // callback(null, self.restaurant);
+    Promise.resolve(self.restaurant);
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
-    error = 'No restaurant id in URL'
-    callback(error, null);
+    error = 'No restaurant id in URL'.
+    // callback(error, null);
+    Promise.resolve(self.restaurant);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    return DBHelper.fetchRestaurantById(id)
+    .then((restaurant)=>{
       self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
-        return;
-      }
       fillRestaurantHTML();
-      callback(null, restaurant)
+      // callback(null, restaurant);
+      return restaurant;
+    })
+    .catch((error)=>{
+      console.log(error);
+      return error;
     });
   }
-}
+};
 
 /**
  * Create restaurant HTML and add it to the webpage

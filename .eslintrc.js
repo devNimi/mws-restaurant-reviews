@@ -9,5 +9,6 @@ module.exports = {
       "ignoreUrls": true,
       "ignoreStrings": true ,
       "ignoreTrailingComments": true,
+      "max-len": [0, 80, 2]
     }
 };
