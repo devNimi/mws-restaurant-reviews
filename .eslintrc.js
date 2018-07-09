@@ -9,6 +9,15 @@ module.exports = {
       "ignoreUrls": true,
       "ignoreStrings": true ,
       "ignoreTrailingComments": true,
-      "max-len": [0, 80, 2]
+      "max-len": [0, 80, 2],
+      "require-jsdoc": ["error", {
+              "require": {
+                  "FunctionDeclaration": false,
+                  "MethodDefinition": false,
+                  "ClassDeclaration": false,
+                  "ArrowFunctionExpression": false,
+                  "FunctionExpression": false
+              }}
+      ],
     }
 };
