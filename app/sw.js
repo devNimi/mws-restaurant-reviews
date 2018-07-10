@@ -18,6 +18,9 @@
       'img/8.jpg',
       'img/9.jpg',
       'img/10.jpg',
+      'img/icons-192.png',
+      'img/icons-512.png',
+      'manifest.json',
       'index.html',
       // 'restaurant.html', //no need to cache
       'offline.html',

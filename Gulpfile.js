@@ -60,6 +60,7 @@ gulp.task('watch', ['browserSync', 'css-dev'], function() {
   // gulp.watch([task to run], [action to perform]);
   gulp.watch('app/scss/**/*.scss', ['css-dev']);
   gulp.watch('app/*.html', browserSync.reload);
+  gulp.watch('app/*.json', browserSync.reload);
   gulp.watch('app/**/*.js', browserSync.reload);
 });
 
@@ -93,7 +94,8 @@ gulp.task('HTMLminify', function() {
 gulp.task('copy', function() {
   return mergeStream(
     gulp.src('app/data/**/*').pipe(gulp.dest('build/data')),
-    gulp.src('app/img/**/*').pipe(gulp.dest('build/img'))
+    // OPTIMIZE: images task
+    gulp.src('app/img/**/*').pipe(gulp.dest('build/img')),
   );
 });
 
