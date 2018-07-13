@@ -18,6 +18,14 @@ module.exports = {
                   "ArrowFunctionExpression": false,
                   "FunctionExpression": false
               }}
-      ],
+      ]
+      // "valid-jsdoc": ["error", {
+      //     "requireParamDescription": false,
+      //     "requireReturn": false,
+      //     "requireReturnType": false,
+      //     "requireReturnDescription": false,
+      //     "requireParamType": false
+      //   }
+      // ],
     }
 };

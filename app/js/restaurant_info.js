@@ -1,30 +1,12 @@
 let restaurant;
 let map;
-
+document.addEventListener('DOMContentLoaded', (event) => {
+    formListener();
+});
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  // fetchRestaurantFromURL((error, restaurant) => {
-    // if (error) { // Got an error!
-    //   console.error(error);
-    // } else {
-    //   console.log('ent else');
-    //   self.map = new google.maps.Map(document.getElementById('map'), {
-    //     zoom: 16,
-    //     center: restaurant.latlng,
-    //     scrollwheel: false,
-    //   });
-    //   fillBreadcrumb();
-    //   DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    //   // Screen reader users rely on frame titles to describe the contents of frames
-    //   // Adds title to iframe element created by Google Maps
-    //   // https://stackoverflow.com/questions/49012240/google-maps-js-iframe-title
-    //   google.maps.event.addListenerOnce(self.map, 'idle', () => {
-    //     document.getElementsByTagName('iframe')[0].title = 'Google Maps';
-    //   });
-    // }
-
     fetchRestaurantFromURL(restaurant)
     .then((restaurant)=>{
       self.map = new google.maps.Map(document.getElementById('map'), {
@@ -96,6 +78,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
   // fill reviews
   fillReviewsHTML();
+  // congigure 'add reivew form'
+  configureReviewForm();
 };
 
 /*
@@ -117,27 +101,37 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
   }
 };
 
+const appendReview = (review) => {
+    const ul = document.getElementById('reviews-list');
+    const formattedReview = createReviewHTML(review);
+    ul.appendChild(formattedReview);
+};
+
 /*
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
-  const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
-  title.className = 'grid-8';
-  title.innerHTML = 'Reviews';
-  container.appendChild(title);
+fillReviewsHTML = (restaurant = self.restaurant) => {
+  DBHelper.fetchReviewsById(restaurant.id)
+  .then((response)=>{
+    const reviews = response;
+    const container = document.getElementById('reviews-container');
+    // const title = document.createElement('h2');
+    // title.className = 'grid-8';
+    // title.innerHTML = 'Reviews';
+    // container.appendChild(title);
 
-  if (!reviews) {
-    const noReviews = document.createElement('p');
-    noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
-    return;
-  }
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach((review) => {
-    ul.appendChild(createReviewHTML(review));
+    if (reviews.length === 0) {
+      const noReviews = document.createElement('p');
+      noReviews.innerHTML = 'No reviews yet!';
+      container.appendChild(noReviews);
+      return;
+    }
+    const ul = document.getElementById('reviews-list');
+    reviews.forEach((review) => {
+      ul.appendChild(createReviewHTML(review));
+    });
+    container.appendChild(ul);
   });
-  container.appendChild(ul);
 };
 
 /*
@@ -156,7 +150,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
    // append date to heading
    const date = document.createElement('span');
    date.className = 'float-right';
-   date.innerHTML = review.date;
+   date.innerHTML = new Date(review.updatedAt).toLocaleString();
    name.appendChild(date);
 
    // create div for review content
@@ -198,4 +192,40 @@ getParameterByName = (name, url) => {
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
+
+configureReviewForm = (restaurant = self.restaurant) => {
+  const restaurantIdInput = document.getElementById('review-form-restaurant-id');
+  restaurantIdInput.setAttribute('value', restaurant.id);
+};
+
+const formListener = () => {
+    const form = document.getElementById('add-review-form-container');
+    const reviewerNameInput = document.getElementById('reviewer-name');
+    const reviewerRatingInput = document.getElementById('reviewer-rating');
+    const reviewerCommentsInput = document.getElementById('review-text');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const reviewerName = reviewerNameInput.value;
+        const reviewerRating = reviewerRatingInput.value;
+        const reviewerComments = reviewerCommentsInput.value;
+
+        const review = {
+            restaurant_id: parseInt(getParameterByName('id')),
+            name: reviewerName,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            rating: parseInt(reviewerRating),
+            comments: reviewerComments,
+        };
+        appendReview(review);
+        // store review locally
+        DBHelper.addUserReviewToIndexDB(review).then((review)=>{
+          console.log(`user review added successfully to IndexDB with id
+            ${review}`);
+        });
+        // submit review to server
+        DBHelper.postReview(review);
+    });
 };

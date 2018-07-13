@@ -27,7 +27,7 @@
       '404.html',
     ];
 
-    const staticCacheName = 'restaurant-app-v1';
+    const staticCacheName = 'restaurant-app-v2';
 
     self.addEventListener('install', function(event) {
       console.log('Attempting to install service worker and cache static assets');

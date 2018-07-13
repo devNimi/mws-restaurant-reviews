@@ -64,6 +64,8 @@
       <!-- end restaurant -->
       <!-- Beginning reviews -->
       <section class="" id="reviews-container">
+        <h2 class="grid-8">Reviews</h2>
+        <a href="/add-review.html">WRITE A REVIEW</a>
         <div class="row">
           <ul class="grid-8" id="reviews-list"></ul>
         </div>
@@ -71,6 +73,39 @@
       <!-- End reviews -->
     </main>
     <!-- End main -->
+
+    <!-- Beginning Write a review form -->
+    <form id="add-review-form-container" action="http://localhost:1337/reviews/" method="post">
+      <div class="grid-8">
+        <label for="review-form-name">Name</label>
+        <input type="text" name="name" id="reviewer-name"
+          placeholder="Full name" required autocomplete="name">
+      </div>
+      <div class="grid-8">
+        <label for="review-form-restaurant-id">Restauant Id</label>
+        <input type="number" name="restaurant_id" id="review-form-restaurant-id"
+         disabled required value="">
+      </div>
+      <div class="grid-8">
+        <label for="review-form-rating">Rating</label>
+        <select id="reviewer-rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+      </div>
+      <div class="grid-8">
+        <label for="review-form-review">Reivew</label>
+        <textarea name="comments" id="review-text"
+          placeholder="write your review here" required></textarea>
+
+      </div>
+      <button type="submit" name="button">Submit</button>
+
+    </form>
+    <!-- End Write a review form -->
 
     <!-- Beginning footer -->
     <footer class="row" id="footer">
