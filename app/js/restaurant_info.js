@@ -229,3 +229,14 @@ const formListener = () => {
         DBHelper.postReview(review);
     });
 };
+
+// listen for messages from service serviceWorker
+// https://developer.mozilla.org/en-US/docs/Web/API/Client/postMessage
+if (navigator.serviceWorker) {
+  console.log('listener added');
+  navigator.serviceWorker.addEventListener('message', (message) => {
+    if (message.data.message === 'post-offline-reviews-to-server') {
+        DBHelper.fetchPendingReviewsFromIndexDB();
+    }
+  });
+};

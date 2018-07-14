@@ -4,7 +4,6 @@ let cuisines;
 var map
 var markers = []
 
-
 // register service worker
 if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
@@ -118,7 +117,6 @@ updateRestaurants = () => {
   console.log(cuisine, neighborhood);
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
   .then((restaurants)=>{
-    // console.log(restaurants);
     resetRestaurants(restaurants);
     fillRestaurantsHTML();
   })

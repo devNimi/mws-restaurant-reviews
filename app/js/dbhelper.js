@@ -30,7 +30,7 @@ class DBHelper {
    // OPTIMIZE: using createDatabase everytime is not good, store idbPromise to
    // a variable and use that variable
   static createDatabase() {
-      const idbPromise = idb.open('restaurants-review', 2, (upgradeDb) => {
+      const idbPromise = idb.open('restaurants-review', 3, (upgradeDb) => {
           switch (upgradeDb.oldVersion) {
               case 0:
                   // a placeholder case so that the switch block will
@@ -43,6 +43,9 @@ class DBHelper {
                   console.log('Creating the reviews object store');
                   const reviewsStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id', autoIncrement: true});
                   reviewsStore.createIndex('restaurant_id', 'restaurant_id');
+              case 3:
+                  console.log('Creating pending reviews object store');
+                  const offlineReviewsStore = upgradeDb.createObjectStore('offline-reviews', {keyPath: 'id', autoIncrement: true});
           }
       });
       return idbPromise;
@@ -102,6 +105,7 @@ class DBHelper {
                // If the database is empty
                // Go to the network
                // Add network response to IndexedDB
+               // OPTIMIZE logic here
                if (response.length === 0) {
                    return DBHelper.fetchRestaurantsFromNetwork()
                        .then((response) => {
@@ -154,6 +158,7 @@ class DBHelper {
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
+   // TODO: what's this?!!
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
     // Fetch all restaurants
 
@@ -285,20 +290,16 @@ class DBHelper {
   /**
   * add review submitted by user to IndexedDB
   **/
-
-  /**
-   * Fetch reviews from database
-   */
-   static addUserReviewToIndexDB(review) {
-     console.log(review);
-     return DBHelper.createDatabase()
-            .then((db) => {
-                const tx = db.transaction('reviews', 'readwrite');
-                const store = tx.objectStore('reviews');
-                return store.put(review);
-            })
-            .catch(DBHelper.logError);
-   };
+ static addUserReviewToIndexDB(review) {
+   console.log(review);
+   return DBHelper.createDatabase()
+          .then((db) => {
+              const tx = db.transaction('reviews', 'readwrite');
+              const store = tx.objectStore('reviews');
+              return store.put(review);
+          })
+          .catch(DBHelper.logError);
+ };
 
    /**
     * Add review submitted by user to remote database
@@ -308,8 +309,15 @@ class DBHelper {
      .then((review)=>{
        console.log('user review submitted to server successfully');
      })
-     .catch(()=>{
-       // here we'll handle backgraound sync
+     .catch((error)=>{
+       // somthing went wrong while submitting review to server, defer it
+       // here we handle backgraound sync
+       console.log(error);
+       DBHelper.addOfflineReviewsToIndexDB(review).then((response)=>{
+         console.log(`it seems there is some issue with network,
+           successfully added user review to 'offline-reviews' store to send it later`);
+       });
+       DBHelper.registerSync('reviewSync');
      });
    }
 
@@ -335,7 +343,24 @@ class DBHelper {
               return index.getAll(id);
           });
   }
-
+  /**
+   * adds reviews to 'offline-reviews' store when user is offline
+   * that is POST requst to server fails
+   */
+  static addOfflineReviewsToIndexDB(review) {
+    console.log(review);
+    return DBHelper.createDatabase()
+        .then((db) => {
+          // OPTIMIZE: is it really needed?
+            if (!db) {
+                return;
+            }
+            const tx = db.transaction('offline-reviews', 'readwrite');
+            const store = tx.objectStore('offline-reviews');
+            store.put(review);
+            return tx.complete;
+        });
+  }
   /**
    * Go to network to get reviews by restaurant id
    */
@@ -371,10 +396,59 @@ static fetchReviewsById(id) {
         });
 }
 
+/**
+     * Fetch reviews from local database
+     * to send to server
+     */
+    static fetchPendingReviewsFromIndexDB() {
+        console.log(`okie dokie backgroud sync finally seems woring`);
+        return DBHelper.createDatabase()
+            .then((db) => {
+                if (!db) {
+                    return;
+                }
+                const tx = db.transaction('offline-reviews', 'readonly');
+                const store = tx.objectStore('offline-reviews');
+                return store.getAll();
+            })
+            .then((responses) => {
+                const reviews = responses || [];
+                console.log('reading pending reviews from IndexDB');
+                console.log(reviews);
+                return Promise.all(reviews.map((review) => {
+                    return DBHelper.postReviewtoServer(review);
+                }));
+            })
+            .then(DBHelper.clearOfflineReviewsStore)
+            .catch((error) => console.log(error));
+    }
 
 
+  /**
+   * Clear offline reviews from IndexDB
+   */
+  static clearOfflineReviewsStore() {
+      return DBHelper.createDatabase()
+          .then((db) => {
+              if (!db) {
+                  return;
+              }
+              const tx = db.transaction('offline-reviews', 'readwrite');
+              const store = tx.objectStore('offline-reviews');
+              store.clear();
+              console.log('pending review store cleaned');
+              return tx.complete;
+          });
+  }
 
-
-
-
+  /**
+     * Register a sync event
+     */
+    static registerSync(syncTag) {
+        if (navigator.serviceWorker) {
+            navigator.serviceWorker.ready
+                .then((reg) => reg.sync.register('reviewSync'))
+                .then(()=>console.log(`sync event registered for ${syncTag} tag`));
+        }
+    }
 }

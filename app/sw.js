@@ -5,6 +5,7 @@
       'css/main.css',
       'css/404-or-offline.css',
       'https://fonts.googleapis.com/css?family=Raleway:300,400,500,700',
+      'js/lib/idb.js',
       'js/dbhelper.js',
       'js/main.js',
       'js/restaurant_info.js',
@@ -23,11 +24,12 @@
       'manifest.json',
       'index.html',
       // 'restaurant.html', //no need to cache
+      // it is later cached in fetch event
       'offline.html',
       '404.html',
     ];
 
-    const staticCacheName = 'restaurant-app-v2';
+    const staticCacheName = 'restaurant-app-v4';
 
     self.addEventListener('install', function(event) {
       console.log('Attempting to install service worker and cache static assets');
@@ -48,6 +50,8 @@
           event.respondWith(serveRestaurantHTML(event.request));
           return;
         };
+        // Don't cache PUT/POST requests
+        if (event.request.method !== 'GET') return;
         event.respondWith(
           caches.match(event.request).then(function(response) {
             if (response) {
@@ -99,6 +103,23 @@
         })
       );
     });
+
+    self.addEventListener('sync', function(event) {
+      console.log(`Connectivity is stable again :) Let's put data online `);
+      if (event.tag == 'reviewSync') {
+        console.log('sync event fired for reviews that user added while offline');
+        event.waitUntil(sendMessageToClient({message: 'post-offline-reviews-to-server'}));
+      }
+    });
+    // https://developer.mozilla.org/en-US/docs/Web/API/Client/postMessage
+    function sendMessageToClient(message) {
+        // Send a message to the client.
+        self.clients.matchAll().then(function(clients) {
+          clients.forEach(function(client) {
+            client.postMessage(message);
+          });
+        });
+    }
 
     // serves restaurants.html page
     function serveRestaurantHTML(request) {
