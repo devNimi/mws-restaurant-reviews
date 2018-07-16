@@ -75,18 +75,17 @@
     <!-- End main -->
 
     <!-- Beginning Write a review form -->
-    <form id="add-review-form-container" action="http://localhost:1337/reviews/" method="post">
-      <div class="grid-8">
-        <label for="review-form-name">Name</label>
-        <input type="text" name="name" id="reviewer-name"
-          placeholder="Full name" required autocomplete="name">
+    <form id="add-review-form-container" class="container-fluid" action="http://localhost:1337/reviews/" method="post">
+      <h2>Submit Review</h2>
+      <div class="grid-8 review-form-group has-dynamic-label">
+        <input type="name" name="name" id="reviewer-name"
+          placeholder="Full Name" required autocomplete="name">
+        <label for="review-form-name">Full Name</label>
       </div>
-      <div class="grid-8">
-        <label for="review-form-restaurant-id">Restauant Id</label>
-        <input type="number" name="restaurant_id" id="review-form-restaurant-id"
-         disabled required value="">
-      </div>
-      <div class="grid-8">
+      <!-- user dont need to see restaurant_id, it for server -->
+      <input type="hidden" aria-hidden="true" name="restaurant_id" id="review-form-restaurant-id"
+       disabled required value="2">
+      <div class="grid-8 review-form-group">
         <label for="review-form-rating">Rating</label>
         <select id="reviewer-rating">
             <option value="1">1</option>
@@ -96,13 +95,14 @@
             <option value="5">5</option>
         </select>
       </div>
-      <div class="grid-8">
+      <div class="grid-8 review-form-group">
         <label for="review-form-review">Reivew</label>
         <textarea name="comments" id="review-text"
           placeholder="write your review here" required></textarea>
-
       </div>
-      <button type="submit" name="button">Submit</button>
+      <div class="grid-8">
+        <button type="submit" name="button">Submit</button>
+      </div>
 
     </form>
     <!-- End Write a review form -->

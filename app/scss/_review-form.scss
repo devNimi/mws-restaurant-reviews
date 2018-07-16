@@ -1,0 +1,169 @@
+// inspiraton from  https://jonathan-harrell.com/advanced-css-form-styling/
+input[type='text'], input[type='name'], input[type='password'], input[type='url'], input[type='email'], input[type='tel'], input[type='search'], input[type='number'], input[type='date'], input[type='month'], input[type='week'], input[type='datetime-local'], input[type='color'] {
+    display: block;
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    color: $primary-color-dark;
+}
+
+input, select, textarea {
+    outline: 0;
+    border: 0;
+    border-bottom: 1px solid $primary-color-dark;
+}
+
+button, input, textarea, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    text-align: inherit;
+    resize: none;
+    background-color: transparent;
+    background-image: none;
+}
+
+button,
+[role='button'],
+input[type='submit'],
+input[type='button'],
+input[type='reset'] {
+  display: inline-flex;
+  width: auto;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 4px;
+  outline: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  color: white;
+  background-color: $primary-color-dark;
+  transition: background-color 0.1s ease-out;
+  cursor: pointer;
+}
+button:hover:not(:disabled), [role='button']:hover:not(:disabled), input[type='submit']:hover:not(:disabled), input[type='button']:hover:not(:disabled), input[type='reset']:hover:not(:disabled) {
+    color: $primary-color-text;
+    background-color: $additional-color-one;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 0.5rem 0.75rem;
+  // border: $secondary-text-color;
+  color: $primary-color-dark;
+}
+textarea::placeholder {
+    color: $secondary-text-color;
+}
+
+/* select element styling */
+select {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid $primary-color-dark;
+  color: $primary-color-dark;
+  background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20width%3D%2230px%22%20height%3D%2216px%22%20viewBox%3D%220%200%2030%2016%22%20version%3D%221.1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%3E%0A%20%20%20%20%3Cg%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate%28-137.000000%2C%20-145.000000%29%22%20fill%3D%22%23000000%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%22152%20161%20137%20145%20167%20145%22%3E%3C/polygon%3E%0A%20%20%20%20%20%20%20%20%3C/g%3E%0A%20%20%20%20%3C/g%3E%0A%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.75rem
+}
+
+input {
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.75rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: $font-weight-bolder;
+    font-weight: $font-weight-bolder;
+    position: absolute;
+    top: 0;
+    font-size: $font-size-sm;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.2s ease-out;
+}
+
+input:placeholder-shown + label {
+    opacity: 0;
+    transform: translateY(1rem);
+}
+
+input:disabled {
+    border-color: $secondary-text-color;
+    background-color: $primary-color-dark;
+    color: white;
+}
+
+input:valid {
+    border-color: $additional-color-one;
+    background-image: url("data:image/svg+xml,%3Csvg width='45px' height='34px' viewBox='0 0 45 34' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg transform='translate%28-56.000000, -59.000000%29' fill='%232EEC96'%3E%3Cpolygon points='70.1468531 85.8671329 97.013986 59 100.58042 62.5664336 70.1468531 93 56 78.8531469 59.5664336 75.2867133'%3E%3C/polygon%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+input:invalid {
+    background-image: url("data:image/svg+xml,%3Csvg width='30px' height='30px' viewBox='0 0 30 30' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg transform='translate%28-128.000000, -59.000000%29' fill='%23F44336'%3E%3Cpolygon points='157.848404 61.9920213 145.980053 73.8603723 157.848404 85.7287234 154.856383 88.7207447 142.988032 76.8523936 131.119681 88.7207447 128.12766 85.7287234 139.996011 73.8603723 128.12766 61.9920213 131.119681 59 142.988032 70.8683511 154.856383 59'%3E%3C/polygon%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+textarea:valid {
+    border-color: $additional-color-one;
+}
+
+textarea:invalid {
+    border-color: $primary-color-dark;
+}
+
+input:focus, select:focus, textarea:focus {
+  border--bootm: 2px solid $accent-color;
+}
+
+form {
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px $secondary-text-color;
+}
+
+form h2 {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $primary-color-light;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+.review-form-group {
+    // position: relative;
+    padding-bottom: 1rem;
+    padding-top: 2em;
+}
+
+
+.has-dynamic-label {
+    position: relative;
+    padding-top: 1.5rem;
+}
+
+.has-dynamic-label label {
+    position: absolute;
+    top: 0;
+    font-size: 0.87rem;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.2s ease-out;
+}
