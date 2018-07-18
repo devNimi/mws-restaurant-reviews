@@ -1,5 +1,7 @@
 #Note
 
+## Getting Started
+
 * `npm install`
 * `gulp serve` for development
 * `gulp build` for production
@@ -8,6 +10,18 @@
 * to set up ES Lint [go here](https://hackernoon.com/what-is-eslint-how-do-i-set-it-up-on-atom-70f270f57296)
 
 => if there is error installing npm packages on MAC, try `sudo npm i --unsafe-perm=true`
+
+## Setting Up Server
+
+It the way how Udacity setup up the project for us. You'll have to download server repository [from here](https://github.com/devNimi/mws-restaurant-stage-3)
+
+**Note:**  don't download server files in same directory as project's directory, after downloading, run
+
+* `npm i`
+* `npm i sails -g`
+* `node server`
+
+**Now run `gulp serve` in project directory** 
 
 ## personal notes
 specifically use browser-sync v2.12.8 otherwise on style changes browser won't reload
