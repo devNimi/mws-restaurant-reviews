@@ -13,15 +13,16 @@
 
 ## Setting Up Server
 
-It the way how Udacity setup up the project for us. You'll have to download server repository [from here](https://github.com/devNimi/mws-restaurant-stage-3)
+It's the way how Udacity setup up the project for us. You'll have to download server repository [from here](https://github.com/devNimi/mws-restaurant-stage-3) or you can use one in the project itself go to `server/` 
 
-**Note:**  don't download server files in same directory as project's directory, after downloading, run
+then run
 
 * `npm i`
 * `npm i sails -g`
 * `node server`
 
-**Now run `gulp serve` in project directory** 
+**Note:**  There will be 2 servers running one for the app and one for server (this one). 
+
 
 ## personal notes
 specifically use browser-sync v2.12.8 otherwise on style changes browser won't reload
