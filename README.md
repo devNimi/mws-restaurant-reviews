@@ -1,4 +1,6 @@
-#Note
+**Project live [over here](https://nimesh-restaurant-reviews.herokuapp.com/)** 
+
+**Note**: Live version is fully progressiv offline web app. But it doesn't yet support offline comments. Please clone to the repo to see it in action or [watch this walkthrough](https://www.youtube.com/watch?v=PkN1xxQud6g&index=1&list=UUzcDfbQ2CLQi9RDsjVlfebA)
 
 ## Getting Started
 
