@@ -41,7 +41,21 @@
             </select>
           </div>
         </div>
+        <div id="loader-container">
+          <div class="wrap">
+            <div class="loading">
+              <div class="bounceball"></div>
+              <div class="text">fetching data....</div>
+              <p class="loader-message">this will happen only once...</p>
+            </div>
+          </div>
+        </div>
+             
         <ul id="restaurants-list"></ul>
+        <!-- Fix me -->
+        <!-- keep it here untill API deployment issue on Heroku resolves
+        this is kept here because API response from heroku is taking 20s,
+      this is to let user know we are fetching data -->
       </section>
     </main>
 

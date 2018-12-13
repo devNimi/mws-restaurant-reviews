@@ -1,0 +1,67 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+#loader-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+$width: 15px;
+$height: 15px;
+
+$bounce_height: 30px;
+
+.wrap {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.loader-message {
+  text-align: center;
+  color: #1a1a1a;
+  margin-top: 0.3em;
+  font-size: 0.9em;
+}
+.text {
+  color: #4664c3;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.bounceball {
+  position: relative;
+  display: inline-block;
+  height: 37px;
+  width: $width;
+  &:before {
+    position: absolute;
+    content: "";
+    display: block;
+    top: 0;
+    width: $width;
+    height: $height;
+    border-radius: 50%;
+    background-color: #5d7fe8;
+    transform-origin: 50%;
+    animation: bounce 500ms alternate infinite ease;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    top: $bounce_height;
+    height: 5px;
+    border-radius: 60px 60px 20px 20px;
+    transform: scaleX(2);
+  }
+  35% {
+    height: $height;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+  100% {
+    top: 0;
+  }
+}
