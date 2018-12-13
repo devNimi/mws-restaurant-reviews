@@ -31,29 +31,29 @@ class DBHelper {
   // OPTIMIZE: using createDatabase everytime is not good, store idbPromise to
   // a variable and use that variable
   static createDatabase() {
-    const idbPromise = idb.open("restaurants-review", 3, upgradeDb => {
+    const idbPromise = idb.open('restaurants-review', 3, upgradeDb => {
       switch (upgradeDb.oldVersion) {
         case 0:
         // a placeholder case so that the switch block will
         // execute when the database is first created
         // (oldVersion is 0)
         case 1:
-          console.log("Creating the restaurants object store");
-          const restaurantStore = upgradeDb.createObjectStore("restaurants", {
-            keyPath: "id"
+          console.log('Creating the restaurants object store');
+          const restaurantStore = upgradeDb.createObjectStore('restaurants', {
+            keyPath: 'id'
           });
         case 2:
-          console.log("Creating the reviews object store");
-          const reviewsStore = upgradeDb.createObjectStore("reviews", {
-            keyPath: "id",
+          console.log('Creating the reviews object store');
+          const reviewsStore = upgradeDb.createObjectStore('reviews', {
+            keyPath: 'id',
             autoIncrement: true
           });
-          reviewsStore.createIndex("restaurant_id", "restaurant_id");
+          reviewsStore.createIndex('restaurant_id', 'restaurant_id');
         case 3:
-          console.log("Creating pending reviews object store");
+          console.log('Creating pending reviews object store');
           const offlineReviewsStore = upgradeDb.createObjectStore(
-            "offline-reviews",
-            { keyPath: "id", autoIncrement: true }
+            'offline-reviews',
+            { keyPath: 'id', autoIncrement: true }
           );
       }
     });
@@ -69,12 +69,12 @@ class DBHelper {
         if (!db) {
           return;
         }
-        const tx = db.transaction("restaurants", "readwrite");
-        const store = tx.objectStore("restaurants");
+        const tx = db.transaction('restaurants', 'readwrite');
+        const store = tx.objectStore('restaurants');
 
         return Promise.all(
           restaurants.map(restaurant => {
-            console.log("adding restaurants to database");
+            console.log('adding restaurants to database');
             return store.put(restaurant);
           })
         );
@@ -90,17 +90,17 @@ class DBHelper {
    */
   static fetchRestaurantsFromDB() {
     return DBHelper.createDatabase().then(db => {
-      const tx = db.transaction("restaurants", "readonly");
-      const store = tx.objectStore("restaurants");
+      const tx = db.transaction('restaurants', 'readonly');
+      const store = tx.objectStore('restaurants');
       return store.getAll();
     });
   }
 
   static fetchRestaurantsFromNetwork() {
-    return fetch(DBHelper.DATABASE_URL + "/restaurants")
+    return fetch(DBHelper.DATABASE_URL + '/restaurants')
       .then(DBHelper.validateJSON)
       .catch(function(error) {
-        console.log("Looks like there was a problem: \n", error);
+        console.log('Looks like there was a problem: \n', error);
         return errror;
       });
   }
@@ -144,7 +144,7 @@ class DBHelper {
         }
       })
       .catch(function(error) {
-        console.log("Looks like there was a problem: \n", error);
+        console.log('Looks like there was a problem: \n', error);
         return error;
       });
   }
@@ -194,18 +194,18 @@ class DBHelper {
       .then(response => {
         const restaurants = response;
         let results = restaurants;
-        if (cuisine != "all") {
+        if (cuisine != 'all') {
           // filter by cuisine
           results = results.filter(r => r.cuisine_type == cuisine);
         }
-        if (neighborhood != "all") {
+        if (neighborhood != 'all') {
           // filter by neighborhood
           results = results.filter(r => r.neighborhood == neighborhood);
         }
         return results;
       })
       .catch(error => {
-        console.log("Looks like there was a problem: \n", error);
+        console.log('Looks like there was a problem: \n', error);
         return error;
       });
   }
@@ -228,7 +228,7 @@ class DBHelper {
         return uniqueNeighborhoods;
       })
       .catch(function(error) {
-        console.log("Looks like there was a problem: \n", error);
+        console.log('Looks like there was a problem: \n', error);
         return error;
       });
   }
@@ -250,7 +250,7 @@ class DBHelper {
         return uniqueCuisines;
       })
       .catch(function(error) {
-        console.log("Looks like there was a problem: \n", error);
+        console.log('Looks like there was a problem: \n', error);
         return error;
       });
   }
@@ -292,12 +292,12 @@ class DBHelper {
         if (!db) {
           return;
         }
-        const tx = db.transaction("reviews", "readwrite");
-        const store = tx.objectStore("reviews");
+        const tx = db.transaction('reviews', 'readwrite');
+        const store = tx.objectStore('reviews');
 
         return Promise.all(
           reviews.map(review => {
-            console.log("adding reviews to database");
+            console.log('adding reviews to database');
             return store.put(review);
           })
         );
@@ -315,8 +315,8 @@ class DBHelper {
     console.log(review);
     return DBHelper.createDatabase()
       .then(db => {
-        const tx = db.transaction("reviews", "readwrite");
-        const store = tx.objectStore("reviews");
+        const tx = db.transaction('reviews', 'readwrite');
+        const store = tx.objectStore('reviews');
         return store.put(review);
       })
       .catch(DBHelper.logError);
@@ -328,7 +328,7 @@ class DBHelper {
   static postReview(review) {
     DBHelper.postReviewtoServer(review)
       .then(review => {
-        console.log("user review submitted to server successfully");
+        console.log('user review submitted to server successfully');
       })
       .catch(error => {
         // somthing went wrong while submitting review to server, defer it
@@ -338,7 +338,7 @@ class DBHelper {
           console.log(`it seems there is some issue with network,
            successfully added user review to 'offline-reviews' store to send it later`);
         });
-        DBHelper.registerSync("reviewSync");
+        DBHelper.registerSync('reviewSync');
       });
   }
 
@@ -346,21 +346,21 @@ class DBHelper {
    * Submit review to server
    */
   static postReviewtoServer(review) {
-    const url = "https://mws-restaurant-reviews-server.herokuapp.com/reviews/";
+    const url = 'https://mws-restaurant-reviews-server.herokuapp.com/reviews/';
     // const url = "http://localhost:1337/reviews/";
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(review)
     };
     return fetch(url, options);
   }
 
   static fetchReviewsByIdFromDB(id) {
-    console.log("fetchReviewsfromDB");
+    console.log('fetchReviewsfromDB');
     return DBHelper.createDatabase().then(db => {
-      const tx = db.transaction("reviews", "readonly");
-      const store = tx.objectStore("reviews");
-      const index = store.index("restaurant_id");
+      const tx = db.transaction('reviews', 'readonly');
+      const store = tx.objectStore('reviews');
+      const index = store.index('restaurant_id');
       return index.getAll(id);
     });
   }
@@ -375,17 +375,34 @@ class DBHelper {
       if (!db) {
         return;
       }
-      const tx = db.transaction("offline-reviews", "readwrite");
-      const store = tx.objectStore("offline-reviews");
+      const tx = db.transaction('offline-reviews', 'readwrite');
+      const store = tx.objectStore('offline-reviews');
       store.put(review);
       return tx.complete;
     });
   }
   /**
+   * adds reviews to 'offline-reviews' store when user is offline
+   * that is POST requst to server fails
+   */
+  static addOfflineToggleFavouriteToIndexDB(restaurantId, status) {
+    return DBHelper.createDatabase().then(db => {
+      // OPTIMIZE: is it really needed?
+      if (!db) {
+        return;
+      }
+      const tx = db.transaction('offline-favourite', 'readwrite');
+      const store = tx.objectStore('offline-favourite');
+      store.put({ id: restaurantId, prefrence: status });
+      return tx.complete;
+    });
+  }
+
+  /**
    * Go to network to get reviews by restaurant id
    */
   static fetchReviewsByIdFromNetwork(id) {
-    console.log("fetch reviews from network");
+    console.log('fetch reviews from network');
     return (
       fetch(DBHelper.DATABASE_URL + `/reviews/?restaurant_id=${id}`)
         .then(DBHelper.validateJSON)
@@ -428,13 +445,13 @@ class DBHelper {
         if (!db) {
           return;
         }
-        const tx = db.transaction("offline-reviews", "readonly");
-        const store = tx.objectStore("offline-reviews");
+        const tx = db.transaction('offline-reviews', 'readonly');
+        const store = tx.objectStore('offline-reviews');
         return store.getAll();
       })
       .then(responses => {
         const reviews = responses || [];
-        console.log("reading pending reviews from IndexDB");
+        console.log('reading pending reviews from IndexDB');
         console.log(reviews);
         return Promise.all(
           reviews.map(review => {
@@ -454,10 +471,10 @@ class DBHelper {
       if (!db) {
         return;
       }
-      const tx = db.transaction("offline-reviews", "readwrite");
-      const store = tx.objectStore("offline-reviews");
+      const tx = db.transaction('offline-reviews', 'readwrite');
+      const store = tx.objectStore('offline-reviews');
       store.clear();
-      console.log("pending review store cleaned");
+      console.log('pending review store cleaned');
       return tx.complete;
     });
   }
@@ -468,7 +485,7 @@ class DBHelper {
   static registerSync(syncTag) {
     if (navigator.serviceWorker) {
       navigator.serviceWorker.ready
-        .then(reg => reg.sync.register("reviewSync"))
+        .then(reg => reg.sync.register('reviewSync'))
         .then(() => console.log(`sync event registered for ${syncTag} tag`));
     }
   }

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/udacity/mws-restaurant-stage-1#readme",
   "devDependencies": {
-    "browser-sync": "^2.12.8",
+    "browser-sync": "2.12.8",
     "del": "^3.0.0",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
@@ -33,5 +33,8 @@
     "gulp-useref": "^3.1.5",
     "run-sequence": "^2.2.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "prettier": {
+    "singleQuote": true
+  }
 }
